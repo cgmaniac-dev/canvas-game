@@ -26,7 +26,7 @@ class Projectile{
         this.x = x
         this.y = y
         this.radius = radius
-        this.color =color
+        this.color = color
         this.velocity = velocity
     }
 
@@ -68,7 +68,7 @@ class Enemy{
 
 const x = canvas.width/2
 const y = canvas.height/2
-const player = new Player(x,y,30,'white')
+const player = new Player(x,y,10,'white')
 
 
 const projectiles = []
@@ -87,7 +87,8 @@ function spawnEnemies(){
             x = Math.random()*canvas.width
             y = Math.random()<0.5?0-radius:canvas.height+radius
         }
-        const color = 'green'
+        const colorR = Math.random()*360
+        const color = `hsl(${colorR},50%,50%)`
         const angle = Math.atan2(canvas.height/2 -y,canvas.width/2-x)
         const velocity = {
         x: Math.cos(angle),
@@ -143,10 +144,10 @@ window.addEventListener('click',(e)=>{
     console.log(projectiles)
     const angle = Math.atan2(e.clientY- canvas.height/2,e.clientX-canvas.width/2)
     const velocity = {
-        x: Math.cos(angle),
-        y: Math.sin(angle)
+        x: Math.cos(angle)*6,
+        y: Math.sin(angle)*6
     }
-    projectiles.push(new Projectile(canvas.width/2,canvas.height/2,5,'red',velocity))
+    projectiles.push(new Projectile(canvas.width/2,canvas.height/2,5,'white',velocity))
     
 })
 
