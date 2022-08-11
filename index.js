@@ -3,6 +3,10 @@ const c = canvas.getContext('2d')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
+const scoreEl = document.querySelector('#scoreEl')
+const startGamebtn = document.querySelector('#startGameBtn')
+const modalEl = document.querySelector('#modalEl')
+const bigScoreEl = document.querySelector('#bigScoreEl')
 
 class Player {
     constructor(x, y, radius, color){
@@ -123,6 +127,7 @@ function spawnEnemies(){
         const colorR = Math.random()*360
         const color = `hsl(${colorR},50%,50%)`
         const angle = Math.atan2(canvas.height/2 -y,canvas.width/2-x)
+
         const velocity = {
         x: Math.cos(angle),
         y: Math.sin(angle)
@@ -133,6 +138,7 @@ function spawnEnemies(){
 }
 // const projectile = new Projectile(canvas.width/2,canvas.height/2,5,'red',{x:1,y:1})
 let animationId
+let score = 0
 function animate(){
     animationId = requestAnimationFrame(animate)
     c.fillStyle = 'rgba(0,0,0,0.1)'
@@ -167,12 +173,19 @@ function animate(){
         const dist =Math.hypot(player.x - enemy.x,player.y -enemy.y)
         if (dist - enemy.radius - player.radius<1){
             cancelAnimationFrame(animationId)
+            modalEl.style.display="flex"
+            bigScoreEl.innerHTML = score
+
         }
 
         // when the projectile touch 
         projectiles.forEach((projectile,projectileIndex)=>{
             const dist =Math.hypot(projectile.x - enemy.x,projectile.y -enemy.y)
             if (dist - enemy.radius - projectile.radius<1){
+
+                score +=100
+                console.log(score)
+                scoreEl.innerHTML = score
 
                 // Explosions
                 for (let i =0 ; i<enemy.radius*2;i++){
@@ -207,11 +220,15 @@ window.addEventListener('click',(e)=>{
         x: Math.cos(angle)*6,
         y: Math.sin(angle)*6
     }
-    projectiles.push(new Projectile(canvas.width/2,canvas.height/2,5,'white',velocity))
-    
+    projectiles.push(new Projectile(canvas.width/2,canvas.height/2,5,'white',velocity)) 
 })
 
-animate()
-spawnEnemies()
+startGamebtn.addEventListener('click',(e)=>{
+    animate()
+    spawnEnemies()
+    modalEl.style.display = 'none'
+})
+
+
 
 
