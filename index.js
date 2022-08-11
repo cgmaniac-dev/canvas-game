@@ -3,6 +3,7 @@ const c = canvas.getContext('2d')
 
 canvas.width = innerWidth
 canvas.height = innerHeight
+
 const scoreEl = document.querySelector('#scoreEl')
 const startGamebtn = document.querySelector('#startGameBtn')
 const modalEl = document.querySelector('#modalEl')
@@ -107,9 +108,17 @@ const y = canvas.height/2
 const player = new Player(x,y,10,'white')
 
 
-const projectiles = []
-const enemies = []
-const particles = []
+let projectiles = []
+let enemies = []
+let particles = []
+
+function init(){
+    score=0
+    scoreEl.innerHTML = score
+    projectiles = []
+    enemies = []
+    particles = []
+}
 
 function spawnEnemies(){
     setInterval(()=>{
@@ -224,6 +233,7 @@ window.addEventListener('click',(e)=>{
 })
 
 startGamebtn.addEventListener('click',(e)=>{
+    init()
     animate()
     spawnEnemies()
     modalEl.style.display = 'none'
